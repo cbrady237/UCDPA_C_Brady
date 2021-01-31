@@ -7,6 +7,7 @@ import json
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Assign URL to variable: url
 url = 'https://api.jcdecaux.com/vls/v1/stations?contract=dublin&apiKey=4aed48738d7bb38f74643c9e926692a1c6501a45'
@@ -115,7 +116,61 @@ np_percentage_available_bikes = np_available_bikes / np_total_bikes
 print(np_percentage_available_bikes)
 
 
+
+# Add columns with year, month, and weekday name
+df_date['Year'] = df_date.index.year
+df_date['Month'] = df_date.index.month
+df_date['Hour'] = df_date.index.hour
+print(df_date.head(30))
+# Display a random sampling of 5 rows
+
+
+
+hour = df_date.set_index("Hour")
+hour["PERCENT AVAILABLE"] = hour["AVAILABLE BIKES"] / hour["BIKE STANDS"]
+print(hour.head(25))
+AM = [7, 8, 9, 10]
+hour_AM = hour.loc[AM]
+hour_AM2 = hour_AM[["NAME", "BIKE STANDS", "AVAILABLE BIKES"]]
+hour_AM2["PERCENT AVAILABLE"] = hour_AM2["AVAILABLE BIKES"] / hour_AM2["BIKE STANDS"]
+print(hour_AM.head(10))
+print(hour_AM2.head(10))
+
+#sns.pairplot(x="AVAILABLE BIKES", y="BIKE STANDS",
+ #               data = hour_AM,
+  #              kind = "scatter")
+
+sns.set(rc={'figure.figsize':(11, 4)})
+sns.relplot(x="TIME", y="PERCENT AVAILABLE",
+            data=hour,
+            kind="scatter")
+#hour['PERCENT AVAILABLE'].plot(linewidth=2)
+plt.show()
+
+#ax = hour.loc['', 'PERCENT AVAILABLE'].plot()
+#ax.set_ylabel('Percent Available');
+#plt.show()
+
+#g = sns.pairplot(hour_AM, vars=["HOUR", "AVAILABLE BIKES"])
+#plt.show()
+
 #Charts
-#test
+#sns.relplot(x="NAME", y=["AVAILABLE BIKES" < 20],
+#            data=df_July1,
+ #           kind="scatter", col='NAME')
+
+# Show plot
+#plt.show()
+
+
+#x = np_total_bikes
+#y = np_available_bikes
+#sns.pairplot(df_July1, hue="BIKE STANDS")
+
+# Display the plot
+#plt.show()
+
+
+
 
 
